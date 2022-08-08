@@ -1,7 +1,10 @@
 import React from 'react';
 import './App.css';
-import { createStyles, MantineProvider } from '@mantine/core';
+import { createStyles, MantineProvider, Switch } from '@mantine/core';
 import Dashboard from './pages/dashboard/Dashboard';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Voting from './pages/Voting/Voting';
+import Proposals from './pages/Proposals/Proposals';
 
 function App() {
   return (
@@ -18,7 +21,13 @@ function App() {
       }}
     >
       <div className="App">
-        <Dashboard />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/voting" element={<Voting />} />
+            <Route path="/proposals" element={<Proposals />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </MantineProvider>
   );
