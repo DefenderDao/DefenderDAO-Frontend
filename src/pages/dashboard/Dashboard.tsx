@@ -1,17 +1,15 @@
-import {
-  AppShell,
-  Button,
-  createStyles,
-  Header,
-  Navbar,
-  Table
-} from '@mantine/core';
+import { AppShell, Button, createStyles, Table } from '@mantine/core';
 import React, { useState } from 'react';
 import { IoShieldSharp } from 'react-icons/io5';
 import { atom, useAtom } from 'jotai';
 import { atomWithInfiniteQuery, atomWithQuery } from 'jotai/query';
+import { Proposal } from '../../App';
+import NavComponent from '../../components/Navbar/NavComponent';
 
-type Props = {};
+type Props = {
+  recentProposals: Proposal[];
+  blacklistedUrls: Proposal[];
+};
 
 const useStyles = createStyles((theme, _params, getRef) => ({
   wrapper: {
@@ -32,43 +30,13 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     color: theme.colors.primaryColor[0],
     border: '2px solid #eaeaea'
   },
-  connectWalletButton: {
-    backgroundColor: theme.colors.lavender[0],
-    borderRadius: theme.radius.xl,
-    width: '165px',
-    height: '36px',
-    color: theme.colors.primaryColor[0],
-    border: '2px solid #eaeaea',
-    alignSelf: 'center'
-  },
+
   navbar: {
     alignSelf: 'flex-start',
     backgroundColor: theme.colors.primaryColor[0],
     color: theme.colors.platinum[0]
   },
-  header: {
-    backgroundColor: theme.colors.primaryColor[0],
-    color: theme.colors.platinum[0],
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around'
-  },
-  linkContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '40vw',
-    maxWidth: '350px'
-  },
-  logoContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    justifySelf: 'flex-end',
-    width: '45vw',
-    maxWidth: '500px'
-  },
+
   titleContainer: {
     display: 'flex',
     justifyContent: 'center',
@@ -133,146 +101,36 @@ const useStyles = createStyles((theme, _params, getRef) => ({
     overflow: 'scroll',
     color: '#eaeaea'
   },
-  proposalTitle: {
-    color: '#eaeaea'
+  proposalRowLabel: {
+    color: '#eaeaea',
+    textAlign: 'right'
+  },
+  submitProposalButton: {
+    backgroundColor: theme.colors.lavender[0],
+    borderRadius: theme.radius.xl,
+    width: '165px',
+    height: '36px',
+    color: theme.colors.primaryColor[0],
+    border: '2px solid #eaeaea',
+    alignSelf: 'center',
+    marginTop: '65px'
+  },
+  votingPageButton: {
+    backgroundColor: theme.colors.lavender[0],
+    borderRadius: theme.radius.xl,
+    width: '165px',
+    height: '36px',
+    color: theme.colors.primaryColor[0],
+    border: '2px solid #eaeaea',
+    alignSelf: 'center',
+    marginTop: '65px'
   }
 }));
 
-type Proposal = {
-  id: number;
-  url: string;
-  address: string;
-  subDate: string;
-};
-
-const Dashboard = (props: Props) => {
+const Dashboard = ({ recentProposals, blacklistedUrls }: Props) => {
   const { classes } = useStyles();
-  const [proposals, setProposals] = useState<Proposal[]>([
-    {
-      id: 0,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 1,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 2,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 3,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 4,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 5,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 6,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 7,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    },
-    {
-      id: 8,
-      url: 'placeholderurl',
-      address: '0x0000000000000000000000000000000',
-      subDate: '4/20/22'
-    }
-  ]);
-  const [blacklistedUrls, setBlacklistedUrls] = useState([
-    {
-      id: 0,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 1,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 2,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 3,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 4,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 5,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 6,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 7,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 8,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 9,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    },
-    {
-      id: 10,
-      url: 'placeholderUrl',
-      address: '0x0000000000000000000000000000000',
-      date: '4/21/22'
-    }
-  ]);
 
-  const proposalsRows = proposals.map(proposal =>
+  const proposalsRows = recentProposals.map(proposal =>
     <tr key={proposal.id}>
       <td>
         {proposal.url}
@@ -286,7 +144,7 @@ const Dashboard = (props: Props) => {
     </tr>
   );
 
-  const blacklistedRows = blacklistedUrls.map(item => {
+  const blacklistedRows = blacklistedUrls.map(item =>
     <tr key={item.id}>
       <td>
         {item.url}
@@ -295,10 +153,10 @@ const Dashboard = (props: Props) => {
         {item.address}
       </td>
       <td>
-        {item.date}
+        {item.subDate}
       </td>
-    </tr>;
-  });
+    </tr>
+  );
 
   // const idAtom = atom(1);
   // const testAtom = atomWithQuery(get => ({
@@ -315,21 +173,7 @@ const Dashboard = (props: Props) => {
     <AppShell
       padding="md"
       className={classes.wrapper}
-      header={
-        <Header height={120} p="xs" className={classes.header}>
-          <div className={classes.linkContainer}>
-            <h4>Dashboard</h4>
-            <h4>Voting</h4>
-            <h4>Proposals</h4>
-          </div>
-          <div className={classes.logoContainer}>
-            <h1>Defender DAO</h1>
-            <Button className={classes.connectWalletButton}>
-              Connect Wallet
-            </Button>
-          </div>
-        </Header>
-      }
+      header={<NavComponent />}
     >
       <div className={classes.titleContainer}>
         <div className={classes.titleTextContainer}>
@@ -361,7 +205,7 @@ const Dashboard = (props: Props) => {
           horizontalSpacing="md"
           className={classes.proposalTable}
         >
-          <thead>
+          <thead className={classes.proposalRowLabel}>
             <tr>
               <th>Proposal URL</th>
               <th>Submitted By</th>
@@ -373,6 +217,9 @@ const Dashboard = (props: Props) => {
           </tbody>
         </Table>
       </div>
+      <Button className={classes.submitProposalButton}>
+        Submit Proposal
+      </Button>
       <h1 className={classes.proposalsTitle}>Blaclisted URLs</h1>
       <div className={classes.recentProposals}>
         <Table
@@ -388,10 +235,11 @@ const Dashboard = (props: Props) => {
             </tr>
           </thead>
           <tbody>
-            {proposalsRows}
+            {blacklistedRows}
           </tbody>
         </Table>
       </div>
+      <Button className={classes.votingPageButton}>Vote Now!</Button>
     </AppShell>
   );
 };

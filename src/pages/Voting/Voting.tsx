@@ -1,8 +1,11 @@
 import React from 'react';
+import { Proposal } from '../../App';
 
-type Props = {};
+type Props = {
+  recentProposals: Proposal[];
+};
 
-const Voting = (props: Props) => {
+const Voting = ({ recentProposals }: Props) => {
   return <div>Voting</div>;
 };
 
